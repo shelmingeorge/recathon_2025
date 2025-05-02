@@ -94,7 +94,7 @@ void set_LED_colour(CRGB LED_panel, int colour = 0x00FFFF){
   return;
   }
 //
-float PID_regulation(int value_1, int value_2 = 0){ //это множитель
+float PID_regulation(int value_1, int value_2 = 0){ //это множитель, пока не работает, надо учитывать разность показаний 2х центральных датчиков
   return 1.0;
   }
 //
