@@ -29,7 +29,7 @@ void move_straight(int speed){
   }
 
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(9600);
   Wire.begin();
   Serial.println("START PROGRAM");
 
