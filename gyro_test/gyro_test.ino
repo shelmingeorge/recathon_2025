@@ -1,7 +1,7 @@
 #include <Wire.h>
 
 const int gyro_adress = 0x68;
-int axis_speed[] = {0, 0, 0}, axis_accel[] = {0, 0, 0}; // x, y, z
+double axis_speed[] = {0, 0, 0}, axis_accel[] = {0, 0, 0}; // x, y, z
 int raw_gyro_data[7];
 
 void gyro_setup(){
@@ -23,14 +23,18 @@ void get_raw_gyro(){
   }
 
 void reform_gyro_data(){
-  //тут будут преобразования в нормальные единицы и мб доп расчеты
-  raw_gyro_data[4] = axis_speed[0];
-  raw_gyro_data[5] = axis_speed[1];
-  raw_gyro_data[6] = axis_speed[2];
+  double g = 9.81; //+-2G диапазон
+  double speed = 250.0; //+-250 град/с диапазон
+  double accel_coef = 2 * g / 32768;
+  double speed_coef = speed / 32768;
 
-  raw_gyro_data[0] = axis_accel[0];
-  raw_gyro_data[1] = axis_accel[1];
-  raw_gyro_data[2] = axis_accel[2];
+  axis_speed[0] = raw_gyro_data[4] * speed_coef;
+  axis_speed[1] = raw_gyro_data[5] * speed_coef;
+  axis_speed[2] = raw_gyro_data[6] * speed_coef;
+
+  axis_accel[0] = raw_gyro_data[0] * accel_coef;
+  axis_accel[1] = raw_gyro_data[1] * accel_coef;
+  axis_accel[2] = raw_gyro_data[2] * accel_coef;
 
   return;
   }
@@ -47,10 +51,18 @@ void loop() {
   get_raw_gyro();
   reform_gyro_data();
 
-  for (byte i = 0; i < 7; i++) {
-    Serial.print(raw_gyro_data[i]);
-    Serial.print("  ");
+  Serial.print("угловые скорости: ");
+  for (byte i = 0; i < 3; i++) {
+    Serial.print(axis_speed[i]);
+    Serial.print(" град/с   ");
     }
+
+  Serial.print("угловые ускорения: ");
+  for (byte i = 0; i < 3; i++) {
+    Serial.print(axis_accel[i]);
+    Serial.print(" G   ");
+    }
+
   Serial.println("");
-  delay(300);
+  delay(100);
   }
