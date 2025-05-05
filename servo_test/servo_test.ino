@@ -40,10 +40,10 @@ void setup() {
 void loop() {
   for(int i = 100; i > 0; i-=20;){
     move_straight(i);
-    delay(2000);
+    delay(1500);
     move_straight(-i);
-    delay(2000);
+    delay(1500);
     move_straight(0);
-    delay(2000);
+    delay(1500);
     }
   }
