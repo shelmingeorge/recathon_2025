@@ -30,7 +30,6 @@ void move_straight(int speed){
 
 void setup() {
   Serial.begin(9600);
-  Wire.begin();
   Serial.println("START PROGRAM");
 
   init_motor(left_motor, left_motor_pin);
