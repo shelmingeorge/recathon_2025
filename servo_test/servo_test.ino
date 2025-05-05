@@ -44,6 +44,6 @@ void loop() {
     move_straight(-i);
     delay(1500);
     move_straight(0);
-    delay(1500);
+    delay(1000);
     }
   }
