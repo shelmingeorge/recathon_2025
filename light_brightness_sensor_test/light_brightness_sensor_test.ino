@@ -1,4 +1,5 @@
 #include <BH1750.h>
+#include <Wire.h>
 
 BH1750 lux_sensor(0x23);
 
