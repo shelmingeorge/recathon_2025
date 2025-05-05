@@ -1,5 +1,5 @@
 # recathon_2025
-скачивайте для каждого теста те библиотеки, которые в нем требуются. При скачивании Adafruit_TCS34725-master также надо будет скачать и указать путь к Adafruit_BusIO-master через sketch -> include library -> add zip library.
+скачивайте для каждого теста из папки libraries те библиотеки, которые в нем требуются. При скачивании Adafruit_TCS34725-master также надо будет скачать и указать путь к Adafruit_BusIO-master через sketch -> include library -> add zip library.
 
 ## Что делают тестовые программы - 
 ### servo_test - 
