@@ -17,7 +17,7 @@ void setup() {
 
   delay(2000);
 
-  for (int i == 0; i < LED_amount; i++){
+  for (int i = 0; i < LED_amount; i++){
     front_LED.leds[i] = mRGB(0, 255, 0);
     front_LED.show();
     back_LED.leds[i] = mRGB(255, 255, 255);
