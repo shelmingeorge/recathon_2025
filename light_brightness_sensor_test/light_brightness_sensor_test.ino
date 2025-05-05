@@ -1,7 +1,8 @@
 #include <BH1750.h>
 #include <Wire.h>
 
-BH1750 lux_sensor(0x23);
+const int lux_adress = 0x23;
+BH1750 lux_sensor(lux_adress);
 
 float get_lux_sensor(){
   float lux = lux_sensor.readLightLevel();
