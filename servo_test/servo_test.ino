@@ -18,7 +18,7 @@ void set_motor_speed(Servo motor, int speed){ // 100 - max speed, -100 - min spe
   if (speed < 0) pwm_speed = ((zero_pwm - min_pwm) / 100.0) * speed + zero_pwm;
   if (speed >= 0) pwm_speed = ((max_pwm - zero_pwm) / 100.0) * speed + zero_pwm;
   
-  motor.writeMicrosecond(pwm_speed);
+  motor.writeMicroseconds(pwm_speed);
   return;
   }
 
@@ -34,11 +34,10 @@ void setup() {
 
   init_motor(left_motor, left_motor_pin);
   init_motor(right_motor, right_motor_pin);
-
   }
 
 void loop() {
-  for(int i = 100; i > 0; i-=20;){
+  for(int i = 100; i > 0; i-=20){
     move_straight(i);
     delay(1500);
     move_straight(-i);
