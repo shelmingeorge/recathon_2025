@@ -24,13 +24,13 @@ void get_raw_gyro(){
 
 void reform_gyro_data(){
   //тут будут преобразования в нормальные единицы и мб доп расчеты
-  raw_gyro_data[0] = axis_speed[0];
-  raw_gyro_data[1] = axis_speed[1];
-  raw_gyro_data[2] = axis_speed[2];
+  raw_gyro_data[4] = axis_speed[0];
+  raw_gyro_data[5] = axis_speed[1];
+  raw_gyro_data[6] = axis_speed[2];
 
-  raw_gyro_data[4] = axis_accel[0];
-  raw_gyro_data[5] = axis_accel[1];
-  raw_gyro_data[6] = axis_accel[2];
+  raw_gyro_data[0] = axis_accel[0];
+  raw_gyro_data[1] = axis_accel[1];
+  raw_gyro_data[2] = axis_accel[2];
 
   return;
   }
