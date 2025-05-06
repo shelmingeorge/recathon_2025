@@ -1,14 +1,19 @@
 #include <Wire.h>
 
 const int gyro_address = 0x68;
-double axis_speed[] = {0, 0, 0}, axis_accel[] = {0, 0, 0}; // x, y, z
 int raw_gyro_data[7];
+double axis_speed[] = {0, 0, 0}, axis_accel[] = {0, 0, 0}; // x, y, z
+double axis_angle[] = {0, 0, 0}; // x, y, z
+
+unsigned long start_time = 0; // микросекунды
 
 void gyro_setup(){
   Wire.beginTransmission(gyro_address);
   Wire.write(gyro_address);
   Wire.write(0);     // set to zero (wakes up the MPU-6050)
   Wire.endTransmission(true);
+  
+  start_time = micros();
   return;
   }
 
@@ -39,8 +44,20 @@ void reform_gyro_data(){
   return;
   }
 
+void get_gyro_angles(){
+  unsigned long time_diff = micros() - start_time;
+  if (time_diff < 0) time_diff = micros();
+  for (byte i = 0; i < 3; i++){
+    axis_angle[i] += axis_speed[i] * time_diff / 1000 / 1000;
+    if (axis_angle[i] >= 360.0) axis_angle[i] -= 360.0;
+    if (axis_angle[i] <= -360.0) axis_angle[i] += 360.0;
+    }
+  start_time = micros();
+  return;
+  }
+
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
   Serial.println("START PROGRAM");
   Wire.begin();
   
@@ -50,6 +67,7 @@ void setup() {
 void loop() {
   get_raw_gyro();
   reform_gyro_data();
+  get_gyro_angles();
 
   Serial.print("угловые скорости: ");
   for (byte i = 0; i < 3; i++) {
@@ -57,12 +75,18 @@ void loop() {
     Serial.print(" град/с   ");
     }
 
-  Serial.print("угловые ускорения: ");
+  Serial.print("линейные ускорения: ");
   for (byte i = 0; i < 3; i++) {
     Serial.print(axis_accel[i]);
     Serial.print(" G   ");
     }
 
+  Serial.print("углы по осям: ");
+  for (byte i = 0; i < 3; i++) {
+    Serial.print(axis_angle[i]);
+    Serial.print(" град   ");
+    }
+
   Serial.println("");
-  delay(100);
+  //delay(100);
   }
