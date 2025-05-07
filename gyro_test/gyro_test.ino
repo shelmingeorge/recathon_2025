@@ -9,7 +9,7 @@ unsigned long start_time = 0; // микросекунды
 
 void gyro_setup(){
   Wire.beginTransmission(gyro_address);
-  Wire.write(gyro_address);
+  Wire.write(0x6B);
   Wire.write(0x00);     // set to zero (wakes up the MPU-6050)
   Wire.endTransmission(true);
   /*
