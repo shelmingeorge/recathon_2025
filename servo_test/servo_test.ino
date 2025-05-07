@@ -43,10 +43,12 @@ void setup() {
   }
 
 void loop() {
-  move_straight(25);
-  delay(2000);
+  byte dir = 1;
+  for (int i = 20; i <=100; i++){
+    move_straight(i*dir);
+    delay(100);
+    }
   move_straight(0);
-  delay(1000);
-  move_straight(-25);
   delay(2000);
+  dir *= -1;
   }
