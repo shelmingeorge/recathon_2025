@@ -1,11 +1,4 @@
 #include <Servo.h>
-#include <microLED.h>
-
-const int back_LED_pin = 9, front_LED_pin = 10;
-const int LED_amount = 9;
-
-microLED<LED_amount, back_LED_pin, MLED_NO_CLOCK, LED_WS2812, ORDER_GRB, CLI_AVER> back_LED;
-microLED<LED_amount, front_LED_pin, MLED_NO_CLOCK, LED_WS2812, ORDER_GRB, CLI_AVER> front_LED;
 
 const int left_motor_pin = 6, right_motor_pin = 5;
 const int left_pwm[] = {544, 1540, 2400};
