@@ -6,6 +6,8 @@ const int right_pwm[] = {544, 1500, 2400};
 const int min_pwm = 544, zero_pwm = 1540, max_pwm = 2400;
 Servo left_motor, right_motor;
 
+byte dir = 1; //только для тестов
+
 void init_motor(Servo motor, int motor_pin, int pwm_arr[]){
   motor.attach(motor_pin, pwm_arr[0], pwm_arr[2]);
   motor.writeMicroseconds(pwm_arr[1]);
@@ -43,7 +45,7 @@ void setup() {
   }
 
 void loop() {
-  byte dir = 1;
+
   for (int i = 20; i <=100; i++){
     move_straight(i*dir);
     delay(100);
