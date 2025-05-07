@@ -2,8 +2,8 @@
 
 const int gyro_address = 0x68;
 int raw_gyro_data[7];
-double axis_speed[] = {0.0, 0.0, 0.0}, axis_accel[] = {0.0, 0.0, 0.0}; // x, y, z
-double axis_angle[] = {0.0, 0.0, 0.0}, axis_linear_speed[] = {0.0, 0.0, 0.0}; // x, y, z
+double axis_speed[] = {0.0, 0.0, 0.0}, axis_angle[] = {0.0, 0.0, 0.0}; // x, y, z 
+//double axis_accel[] = {0.0, 0.0, 0.0}, axis_linear_speed[] = {0.0, 0.0, 0.0}; // x, y, z // слишком неточно
 
 unsigned long start_time = 0; // микросекунды
 
@@ -40,18 +40,18 @@ void get_raw_gyro(){
   }
 
 void reform_gyro_data(){
-  double g = 9.81; //+-2G диапазон
   double speed = 250.0; //+-250 град/с диапазон
-  double accel_coef = 2 * g / 32768;
   double speed_coef = speed / 32768;
+  //double g = 9.81; //+-2G диапазон
+  //double accel_coef = 2 * g / 32768;
 
-  axis_speed[0] = raw_gyro_data[4] * speed_coef;
-  axis_speed[1] = raw_gyro_data[5] * speed_coef;
-  axis_speed[2] = raw_gyro_data[6] * speed_coef;
+  axis_speed[0] = -1 * (raw_gyro_data[4] * speed_coef + 0.75);
+  axis_speed[1] = -1 * (raw_gyro_data[5] * speed_coef - 1.48);
+  axis_speed[2] = -1 * (raw_gyro_data[6] * speed_coef + 1.5);
 
-  axis_accel[0] = raw_gyro_data[0] * accel_coef;
-  axis_accel[1] = raw_gyro_data[1] * accel_coef;
-  axis_accel[2] = raw_gyro_data[2] * accel_coef;
+  //axis_accel[0] = raw_gyro_data[0] * accel_coef - 0.95;
+  //axis_accel[1] = raw_gyro_data[1] * accel_coef + 0.26;
+  //axis_accel[2] = raw_gyro_data[2] * accel_coef + 10.6;
 
   return;
   }
@@ -65,7 +65,7 @@ void get_angles_and_speed(){
     if (axis_angle[i] >= 360.0) axis_angle[i] -= 360.0;
     if (axis_angle[i] <= -360.0) axis_angle[i] += 360.0;
 
-    axis_linear_speed[i] += axis_accel[i] * time_diff / 1000 / 1000;
+    //axis_linear_speed[i] += axis_accel[i] * time_diff / 1000 / 1000;
 
     }
   start_time = micros();
@@ -80,10 +80,10 @@ void sleep(int miliseconds){
 
 void setup() {
   Serial.begin(19200);
+  Wire.begin();
   Serial.println("START PROGRAM");
   sleep(1000);
   
-  Wire.begin();
   
   gyro_setup();
   }
@@ -93,30 +93,31 @@ void loop() {
   reform_gyro_data();
   get_angles_and_speed();
 
-
-  Serial.print("угл. скорости: ");
+  /*
+  Serial.print("угл. ск.: ");
   for (byte i = 0; i < 3; i++) {
     Serial.print(axis_speed[i]);
     Serial.print(" град/с| ");
     }
 
-  Serial.print("лин. ускор.: ");
+  Serial.print("лин. уск.: ");
   for (byte i = 0; i < 3; i++) {
     Serial.print(axis_accel[i]);
     Serial.print(" м/^2| ");
     }
-
-  Serial.print("углы по осям: ");
+  */
+  Serial.print("углы: ");
   for (byte i = 0; i < 3; i++) {
     Serial.print(axis_angle[i]);
     Serial.print(" град| ");
     }
-
-  Serial.print("лин. скорости: ");
+  /*
+  Serial.print("лин. ск.: ");
   for (byte i = 0; i < 3; i++) {
     Serial.print(axis_linear_speed[i]);
-    Serial.print(" м/с");
+    Serial.print(" м/с ");
     }
+  */
   
   Serial.println("");
   
