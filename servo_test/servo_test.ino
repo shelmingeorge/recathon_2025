@@ -26,8 +26,8 @@ void set_motor_speed(Servo motor, int pwm_arr[], int speed){ // 100 - max speed,
   }
 
 void move_straight(int speed){
-  set_motor_speed(left_motor, left_pwm, -speed);
-  set_motor_speed(right_motor, right_pwm, speed);
+  set_motor_speed(left_motor, left_pwm, speed);
+  set_motor_speed(right_motor, right_pwm, -speed);
   return;
   }
 
