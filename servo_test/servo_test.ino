@@ -1,50 +1,59 @@
 #include <Servo.h>
+#include <microLED.h>
 
-const int left_motor_pin = 5, right_motor_pin = 6;
-const int min_pwm = 544, max_pwm = 2400, zero_pwm = 1540;
+const int back_LED_pin = 9, front_LED_pin = 10;
+const int LED_amount = 9;
+
+microLED<LED_amount, back_LED_pin, MLED_NO_CLOCK, LED_WS2812, ORDER_GRB, CLI_AVER> back_LED;
+microLED<LED_amount, front_LED_pin, MLED_NO_CLOCK, LED_WS2812, ORDER_GRB, CLI_AVER> front_LED;
+
+const int left_motor_pin = 6, right_motor_pin = 5;
+const int left_pwm[] = {544, 1540, 2400};
+const int right_pwm[] = {544, 1500, 2400};
+const int min_pwm = 544, zero_pwm = 1540, max_pwm = 2400;
 Servo left_motor, right_motor;
 
-void init_motor(Servo motor, int motor_pin){
-  motor.attach(motor_pin, min_pwm, max_pwm);
-  motor.writeMicroseconds(zero_pwm);
+void init_motor(Servo motor, int motor_pin, int pwm_arr[]){
+  motor.attach(motor_pin, pwm_arr[0], pwm_arr[2]);
+  motor.writeMicroseconds(pwm_arr[1]);
   return;
   }
   
-void set_motor_speed(Servo motor, int speed){ // 100 - max speed, -100 - min speed
-  int pwm_speed = zero_pwm;
+void set_motor_speed(Servo motor, int pwm_arr[], int speed){ // 100 - max speed, -100 - min speed
+  int pwm_speed = pwm_arr[1];
 
-  if (speed < 0) pwm_speed = ((zero_pwm - min_pwm) / 100.0) * speed + zero_pwm;
-  if (speed >= 0) pwm_speed = ((max_pwm - zero_pwm) / 100.0) * speed + zero_pwm;
+  if (speed < 0) pwm_speed = ((pwm_arr[1] - pwm_arr[0]) / 100.0) * speed + pwm_arr[1];
+  if (speed >= 0) pwm_speed = ((pwm_arr[2] - pwm_arr[1]) / 100.0) * speed + pwm_arr[1];
 
-  if (speed > 100) pwm_speed = max_pwm;
-  if (speed < -100) pwm_speed = min_pwm;
-  
+  if (speed > 100) pwm_speed = pwm_arr[2];
+  if (speed < -100) pwm_speed = pwm_arr[0];
+
   motor.writeMicroseconds(pwm_speed);
   return;
   }
 
 void move_straight(int speed){
-  set_motor_speed(left_motor, speed);
-  set_motor_speed(right_motor, -speed);
+  set_motor_speed(left_motor, left_pwm, -speed);
+  set_motor_speed(right_motor, right_pwm, speed);
   return;
   }
 
 void setup() {
   Serial.begin(9600);
   Serial.println("START PROGRAM");
+  
+  init_motor(left_motor, left_motor_pin, left_pwm);
+  init_motor(right_motor, right_motor_pin, right_pwm);
 
-  init_motor(left_motor, left_motor_pin);
-  init_motor(right_motor, right_motor_pin);
+  move_straight(0);
 
   }
 
 void loop() {
-  for(int i = 100; i > 0; i-=20){
-    move_straight(i);
-    delay(1500);
-    move_straight(-i);
-    delay(1500);
-    move_straight(0);
-    delay(1000);
-    }
+  move_straight(25);
+  delay(2000);
+  move_straight(0);
+  delay(1000);
+  move_straight(-25);
+  delay(2000);
   }
