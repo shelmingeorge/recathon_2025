@@ -29,7 +29,7 @@ BH1750 lux_sensor(lux_address);
 
 int colour_sensor_array[5]; // red, green, blue, colour_temp, lux
 const int colour_sensor_address = 0x29;
-Adafruit_TCS34725 colour_sensor = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_614MS, TCS34725_GAIN_1X);
+Adafruit_TCS34725 colour_sensor = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_2_4MS, TCS34725_GAIN_1X);
 
 const int line_sensor_pins[] = {A0, A1, A2, A3};
 const int button_pin = 2;
@@ -79,7 +79,7 @@ void reform_gyro_data(){
 
   axis_speed[0] = -1 * (raw_gyro_data[4] * speed_coef + 0.75);
   axis_speed[1] = -1 * (raw_gyro_data[5] * speed_coef - 1.48);
-  axis_speed[2] = -1 * (raw_gyro_data[6] * speed_coef + 1.5);
+  axis_speed[2] = -1 * (raw_gyro_data[6] * speed_coef + 1.57);
 
   //axis_accel[0] = raw_gyro_data[0] * accel_coef - 0.95;
   //axis_accel[1] = raw_gyro_data[1] * accel_coef + 0.26;
@@ -210,7 +210,7 @@ int get_line_sensor(int pin){
   return value;
   }
 
-void get_colour_sensor(){ // функция работает слишком медленно (это прям заметно), вызывать только в редких случаях
+void get_colour_sensor(){
   uint16_t r, g, b, c, colour_temp, lux;
  
   colour_sensor.getRawData(&r, &g, &b, &c);
