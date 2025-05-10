@@ -29,7 +29,7 @@ BH1750 lux_sensor(lux_address);
 
 int colour_sensor_array[5]; // red, green, blue, colour_temp, lux
 const int colour_sensor_address = 0x29;
-Adafruit_TCS34725 colour_sensor = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_2_4MS, TCS34725_GAIN_1X);
+Adafruit_TCS34725 colour_sensor = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_2_4MS, TCS34725_GAIN_4X);
 
 const int line_sensor_pins[] = {A0, A1, A2, A3};
 const int button_pin = 2;
