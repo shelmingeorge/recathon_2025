@@ -210,11 +210,20 @@ int get_line_sensor(int pin){
   return value;
   }
 
+bool check_cross_line(){
+  for (int i = A0; i <= A3; i++){
+    if (get_line_sensor(i) > white_border) {
+      return false;
+      }
+    }
+  return true;
+  }
+
 void get_colour_sensor(){
   uint16_t r, g, b, c, colour_temp, lux;
  
   colour_sensor.getRawData(&r, &g, &b, &c);
-  //colour_temp = colour_sensor.calculateColorTemperature_dn40(r, g, b, c);
+  //colour_temp = colour_sensor.calculateColorTemperature_dn40(r, g, b, c); // слишком медленно
   //lux = colour_sensor.calculateLux(r, g, b); 
 
   colour_sensor_array[0] = r;
