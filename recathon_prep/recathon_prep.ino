@@ -281,11 +281,10 @@ void setup() {
   
   fill_back_colour(0x00FF00); // green
   //move_straight(base_speed); // заменить на езду прямо по гироскопу
-  //delay(500);
+  //sleep(500);
   gyro_setup();
   start_servo_time = millis();
 
-  sleep(100);
   }
 
 void loop() {
